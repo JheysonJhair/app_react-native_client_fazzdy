@@ -6,7 +6,7 @@ export const colors = {
   foreground: '#1B2729',
   border: '#CBCAD0',
   white: '#FFFFFF',
-  other: '#94939b'
+  other: '#94939b',
 };
 export const fonts = {
   boldMt: 'Montserrat-ExtraBold',

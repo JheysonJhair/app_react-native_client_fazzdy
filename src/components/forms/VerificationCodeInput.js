@@ -1,8 +1,8 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import {colors, fonts} from '../../theme/theme';
 
-const VerificationCodeInput = ({code, setCode}) => {
+const VerificationCodeInput = ({code, setCode, textColor = '#000000'}) => {
   const inputs = useRef([]);
 
   const handleChange = (text, index) => {
@@ -27,7 +27,7 @@ const VerificationCodeInput = ({code, setCode}) => {
         <TextInput
           key={index}
           ref={el => (inputs.current[index] = el)}
-          style={styles.input}
+          style={[styles.input, {color: textColor}]}
           keyboardType="numeric"
           maxLength={1}
           onChangeText={text => handleChange(text, index)}
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
     borderWidth: 1,
     textAlign: 'center',
-    color: '#000000',
     fontSize: 18,
     fontFamily: fonts.semiBoldMt,
   },

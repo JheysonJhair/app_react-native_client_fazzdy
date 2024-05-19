@@ -34,56 +34,58 @@ const Login = () => {
   //Login
   const onHandleLogin = async (email, password) => {
     try {
-      if (!email || !password) {
-        setModal({
-          visible: true,
-          status: 'error',
-          title: 'Campos vacios',
-          subtitle: 'Complete todos los campos, es necesario!',
-        });
-        return;
-      }
+      // if (!email || !password) {
+      //   setModal({
+      //     visible: true,
+      //     status: 'error',
+      //     title: 'Campos vacios',
+      //     subtitle: 'Complete todos los campos, es necesario!',
+      //   });
+      //   return;
+      // }
 
-      const emailRegex = /\S+@\S+\.\S+/;
-      if (!emailRegex.test(email)) {
-        setModal({
-          visible: true,
-          status: 'error',
-          title: 'Correo invalido',
-          subtitle: 'Por favor, utiliza una cuenta de Gmail.',
-        });
-        return;
-      }
+      // const emailRegex = /\S+@\S+\.\S+/;
+      // if (!emailRegex.test(email)) {
+      //   setModal({
+      //     visible: true,
+      //     status: 'error',
+      //     title: 'Correo invalido',
+      //     subtitle: 'Por favor, utiliza una cuenta de Gmail.',
+      //   });
+      //   return;
+      // }
 
-      const user = await loginUser(email, password);
-      setModal({
-        visible: true,
-        status: 'loading',
-        title: 'Campos vacios',
-        subtitle: 'Complete todos los campos, es necesario!',
-      });
-      if (user.msg == 'Ingreso correctamente') {
-        if (isChecked) {
-          saveUserData();
-        }
-        setUserInfo({
-          IdUser: user.value.IdUser,
-          FirstName: user.value.FirstName,
-          LastName: user.value.LastName,
-          BirthDate: user.value.BirthDate,
-          Phone: user.value.Phone,
-          ProfileImage: user.value.ProfileImage,
-          UserName: user.value.UserName,
-          Description: user.value.Description,
-        });
-      } else {
-        setModal({
-          visible: true,
-          status: 'error',
-          title: 'Error de ingreso',
-          subtitle: 'Crea una cuenta, es muy rápido!',
-        });
-      }
+      // const user = await loginUser(email, password);
+      // setModal({
+      //   visible: true,
+      //   status: 'loading',
+      //   title: 'Campos vacios',
+      //   subtitle: 'Complete todos los campos, es necesario!',
+      // });
+      // if (user.msg == 'Ingreso correctamente') {
+      //   if (isChecked) {
+      //     saveUserData();
+      //   }
+      //   setUserInfo({
+      //     IdUser: user.value.IdUser,
+      //     FirstName: user.value.FirstName,
+      //     LastName: user.value.LastName,
+      //     BirthDate: user.value.BirthDate,
+      //     Phone: user.value.Phone,
+      //     ProfileImage: user.value.ProfileImage,
+      //     UserName: user.value.UserName,
+      //     Description: user.value.Description,
+      //   });
+      // } else {
+      //   setModal({
+      //     visible: true,
+      //     status: 'error',
+      //     title: 'Error de ingreso',
+      //     subtitle: 'Crea una cuenta, es muy rápido!',
+      //   });
+      // }
+      console.log('hola');
+      navigation.navigate('Steps')
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       setModal({
@@ -243,7 +245,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 10,
   },
   rowContainer: {
     flexDirection: 'row',

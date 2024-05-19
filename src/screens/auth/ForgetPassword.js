@@ -12,151 +12,159 @@ import {AsyncStorage} from 'react-native';
 
 import Button from '../../components/forms/Button';
 import InputForget from '../../components/forms/InputForget';
-import InputPassword from '../../components/forms/InputPassword';
-import GoogleButton from '../../components/forms/GoogleButton';
-import FacebookButton from '../../components/forms/FacebookButton';
 import StatusModal from '../../components/modals/StatusModal ';
+import VerificationCodeInput from '../../components/forms/VerificationCodeInput';
 
-import {loginUser} from '../../services/apiLogin';
-import {useUser} from '../../hooks/UserContext';
-import LogoName from '../../components/forms/LogoName';
 import {colors, fonts} from '../../theme/theme';
 
 const ForgetPassword = () => {
   const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalStatus, setModalStatus] = useState('error');
-  const [text, setText] = useState('');
-  const [text2, setText2] = useState('');
+  const [modal, setModal] = useState({
+    visible: false,
+    status: 'error',
+    title: '',
+    subtitle: '',
+  });
 
-  const {setUserInfo} = useUser();
-
-  const [isChecked, setChecked] = useState(false);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  console.log(isChecked);
-  const onHandleLogin = async (email, password) => {
+  const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  const getEmailVerificate = async email => {
     try {
-      if (!email || !password) {
-        setModalStatus('error');
-        setModalVisible(true);
-        setText('Campos vacios');
-        setText2('Complete todos los campos, es necesario!');
-        return;
-      }
+      // const emailRegex = /\S+@\S+\.\S+/;
+      // if (!emailRegex.test(email)) {
+      //   setModal({
+      //     visible: true,
+      //     status: 'error',
+      //     title: 'Correo invalido',
+      //     subtitle: 'Por favor, utiliza una cuenta de Gmail.',
+      //   });
+      //   return;
+      // }
 
-      const emailRegex = /\S+@\S+\.\S+/;
-      if (!emailRegex.test(email)) {
-        setModalStatus('error');
-        setModalVisible(true);
-        setText('Correo invalido');
-        setText2('Por favor, utiliza una cuenta de Gmail.');
-        return;
-      }
+      // const user = await verifyEmail(email);
 
-      const user = await loginUser(email, password);
-
-      if (user.msg == 'Ingreso correctamente') {
-        if (isChecked) {
-          saveUserData();
-        }
-        setUserInfo({
-          IdUser: user.value.IdUser,
-          FirstName: user.value.FirstName,
-          LastName: user.value.LastName,
-          BirthDate: user.value.BirthDate,
-          Phone: user.value.Phone,
-          ProfileImage: user.value.ProfileImage,
-          UserName: user.value.UserName,
-          Description: user.value.Description,
-        });
-
-        const birthDate = new Date(user.birthDate);
-        const today = new Date();
-
-        const age = today.getFullYear() - birthDate.getFullYear();
-        if (age >= 16 || birthDate) {
-          navigation.navigate('Home');
-        } else {
-          setModalStatus('warning');
-          setModalVisible(true);
-          setText('Opps! menor de edad');
-          setText2('Usted no cumple con los requisitos mínimos');
-        }
-      } else {
-        setModalStatus('error');
-        setModalVisible(true);
-        setText('Error de ingreso');
-        setText2('Crea una cuenta, es muy rápido!');
-      }
+      // if (user.success) {
+      //   setModal({
+      //     visible: true,
+      //     status: 'success',
+      //     title: 'Enviado correctamente!',
+      //     subtitle: 'Por favor verifique eh ingrese el código enviado.',
+      //   });
+      //   setEmailVerified(true);
+      // }
+      setEmailVerified(true);
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+      console.error('CODE: Error al verificar email de ForgetPassword:', error);
+    }
+  };
+  const getCodeVerificate = async (email, code) => {
+    try {
+      // const codeFormated = code.join('');
+      // const codeRegex = /^\d{4}$/;
+      // if (!codeRegex.test(codeFormated)) {
+      //   setModal({
+      //     visible: true,
+      //     status: 'error',
+      //     title: 'Código no valido!',
+      //     subtitle: 'Por favor ingrese un código valido.',
+      //   });
+      //   return;
+      // }
+      // const user = await verifyCode(email, codeFormated);
+
+      // if (user.success) {
+      //   setModal({
+      //     visible: true,
+      //     status: 'loading',
+      //     title: 'Verificando...',
+      //     subtitle:
+      //       'Te hemos enviado un código a tu correo. Por favor, verifica en la carpeta de spam si no lo encuentras en la bandeja de entrada.',
+      //   });
+      //   navigation.navigate('RegisterData', {email});
+      // } else {
+      //   setModal({
+      //     visible: true,
+      //     status: 'error',
+      //     title: 'Error!',
+      //     subtitle:
+      //       'Hubo un problema al verificar el codigo. Por favor, inténtalo de nuevo.',
+      //   });
+      // }
+      navigation.navigate('NewPassword', {email});
+    } catch (error) {
+      console.error(
+        'CODE: Error al enviar el codigo de ForgetPassword:',
+        error,
+      );
     }
   };
 
-  const handleLogin = () => {
-    navigation.navigate('Login');
-  };
-  const handleNewPassword = () => {
-    navigation.navigate('VerificatePassword');
-  };
-
-  ///
-  const saveUserData = async () => {
-    try {
-      await AsyncStorage.setItem('userData', JSON.stringify({email, password}));
-    } catch (error) {
-      console.error('Error al guardar datos de usuario:', error);
-    }
-  };
-  const clearUserData = async () => {
-    try {
-      await AsyncStorage.removeItem('userData');
-    } catch (error) {
-      console.error('Error al borrar datos de usuario:', error);
-    }
-  };
-  ///
+  //Modal
   useEffect(() => {
-    if (modalVisible) {
-      const timeout = setTimeout(() => {
-        setModalVisible(false);
-      }, 3000);
-
+    if (modal.visible) {
+      const timeout = setTimeout(
+        () => setModal({...modal, visible: false}),
+        2000,
+      );
       return () => clearTimeout(timeout);
     }
-  }, [modalVisible]);
+  }, [modal]);
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <Image
-        source={require('../../assets/Logo.png')}
-        style={styles.logoImage}
-      />
-      <Text style={styles.h1}>Contraseña olvidada</Text>
-      <Text style={styles.h2}>
-        Te enviaremos tu código de recuperación a tu correo electronico
-      </Text>
+      {!emailVerified ? (
+        <>
+          <Image
+            source={require('../../assets/Logo.png')}
+            style={styles.logoImage}
+          />
+          <Text style={styles.h1}>Contraseña olvidada</Text>
+          <Text style={styles.h2}>
+            Te enviaremos tu código de recuperación a tu correo electronico
+          </Text>
 
-      <View style={styles.formContainer}>
-        <InputForget
-          placeholder="Email"
-          onChangeText={text => setEmail(text)}
-          value={email}
-        />
-        <Button
-          title="Continuar"
-          onPress={() => handleNewPassword()}
-        />
-      </View>
-
+          <View style={styles.formContainer}>
+            <InputForget
+              placeholder="Email"
+              onChangeText={text => setEmail(text)}
+              value={email}
+            />
+            <Button
+              title="Continuar"
+              onPress={() => getEmailVerificate(email)}
+            />
+          </View>
+        </>
+      ) : (
+        <>
+          <Image
+            source={require('../../assets/Logo.png')}
+            style={styles.logoImage}
+          />
+          <Text style={styles.h1}>Contraseña olvidada</Text>
+          <Text style={styles.h2}>Ingrese el código de recuperación</Text>
+          <View style={styles.formContainer}>
+            <VerificationCodeInput
+              code={verificationCode}
+              setCode={setVerificationCode}
+              textColor="#FFFFFF"
+            />
+            <Button
+              title="Continuar"
+              onPress={() => getCodeVerificate(email, verificationCode)}
+            />
+          </View>
+        </>
+      )}
       <StatusModal
-        visible={modalVisible}
-        status={modalStatus}
-        text={text}
-        text2={text2}
+        visible={modal.visible}
+        status={modal.status}
+        title={modal.title}
+        subtitle={modal.subtitle}
       />
     </KeyboardAvoidingView>
   );
@@ -169,7 +177,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   formContainer: {
     width: '80%',
     alignItems: 'center',
@@ -182,7 +189,6 @@ const styles = StyleSheet.create({
   },
   h1: {
     fontFamily: fonts.boldMt,
-    color: '#000',
     width: '80%',
     color: '#fff',
     fontSize: 24,
@@ -192,7 +198,6 @@ const styles = StyleSheet.create({
   },
   h2: {
     fontFamily: fonts.semiBoldMt,
-    color: '#000',
     width: '80%',
     color: '#fff',
     fontSize: 15,

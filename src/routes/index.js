@@ -1,11 +1,14 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Load from '../screens/home/Load';
+import Home from '../screens/home/Home';
 import Login from '../screens/auth/Login';
 import RegisterEmail from '../screens/auth/RegisterEmail';
 import ForgetPassword from '../screens/auth/ForgetPassword';
-import VerificatePassword from '../screens/auth/VerificatePassword';
 import RegisterData from '../screens/auth/RegisterData';
+import NewPassword from '../screens/auth/NewPassword';
+import Steps from '../screens/home/Steps';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -39,8 +42,19 @@ export default function Routes() {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="VerificatePassword"
-        component={VerificatePassword}
+        name="NewPassword"
+        component={NewPassword}
+        options={{headerShown: false}}
+      />
+      {/*Home*/}
+      <Stack.Screen
+        name="Steps"
+        component={Steps}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Home"
+        component={Home}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

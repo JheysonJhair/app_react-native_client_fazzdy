@@ -58,7 +58,7 @@ const RegisterEmail = () => {
       // }
       setEmailVerified(true);
     } catch (error) {
-      console.error('CODE: Error al verificar email:', error);
+      console.error('CODE: Error al verificar email de RegisterData:', error);
     }
   };
   const getCodeVerificate = async (email, code) => {
@@ -96,7 +96,7 @@ const RegisterEmail = () => {
       // }
       navigation.navigate('RegisterData', {email});
     } catch (error) {
-      console.error('CODE: Error al enviar el codigo:', error);
+      console.error('CODE: Error al enviar el codigo de RegisterData:', error);
     }
   };
 

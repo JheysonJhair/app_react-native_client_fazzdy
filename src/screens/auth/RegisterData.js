@@ -13,7 +13,8 @@ import Input from '../../components/forms/Input';
 import InputPassword from '../../components/forms/InputPassword';
 import StatusModal from '../../components/modals/StatusModal ';
 
-import {verifyEmail, verifyCode} from '../../services/apiUser';
+import {registerUser} from '../../services/apiUser';
+import {loginUser} from '../../services/apiLogin';
 import LogoName from '../../components/forms/LogoName';
 import {colors, fonts} from '../../theme/theme';
 
@@ -33,74 +34,63 @@ const RegisterData = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
-  const [verificationCode, setVerificationCode] = useState(['', '', '', '']);
-  const [emailVerified, setEmailVerified] = useState(false);
+  const onHandleRegister = async () => {
+    if (!name || !lastName || lastName || phone || password) {
+      setModal({
+        visible: true,
+        status: 'error',
+        title: 'Campos vacios',
+        subtitle: 'Complete todos los campos, es necesario!',
+      });
+      return;
+    }
 
-  const getEmailVerificate = async email => {
+    const phoneRegexPeru = /^9\d{8}$/;
+    if (!phoneRegexPeru.test(phone)) {
+      setModal({
+        visible: true,
+        status: 'error',
+        title: 'Número de celular no valido!',
+        subtitle: 'Por favor ingrese nuevamente.',
+      });
+      return;
+    }
     try {
-      // const emailRegex = /\S+@\S+\.\S+/;
-      // if (!emailRegex.test(email)) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Correo invalido',
-      //     subtitle: 'Por favor, utiliza una cuenta de Gmail.',
-      //   });
-      //   return;
-      // }
+      // const response = await registerUser({
+      //   Email: email,
+      //   Password: password,
+      //   FirstName: nombre,
+      //   LastName: apellidos,
+      //   PhoneNumber: telefono,
+      // });
 
-      // const user = await verifyEmail(email);
-
-      // if (user.success) {
+      // if (response.success) {
       //   setModal({
       //     visible: true,
       //     status: 'success',
-      //     title: 'Enviado correctamente!',
-      //     subtitle: 'Por favor verifique eh ingrese el código enviado.',
+      //     title: 'Registro exitoso!',
+      //     subtitle: 'Usted se registro conrrectamente!',
       //   });
-      //   setEmailVerified(true);
-      // }
-      setEmailVerified(true);
-    } catch (error) {
-      console.error('CODE: Error al verificar email:', error);
-    }
-  };
-  const getCodeVerificate = async (email, code) => {
-    try {
-      // const codeFormated = code.join('');
-      // const codeRegex = /^\d{4}$/;
-      // if (!codeRegex.test(codeFormated)) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Código no valido!',
-      //     subtitle: 'Por favor ingrese un código valido.',
+      //   ///Login Automatico
+      //   const user = await loginUser(email, password);
+      //   setUserInfo({
+      //     IdUser: user.value.IdUser,
+      //     FirstName: user.value.FirstName,
+      //     LastName: user.value.LastName,
+      //     Phone: user.value.Phone,
       //   });
-      //   return;
-      // }
-      // const user = await verifyCode(email, codeFormated);
-
-      // if (user.success) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'loading',
-      //     title: 'Verificando...',
-      //     subtitle:
-      //       'Te hemos enviado un código a tu correo. Por favor, verifica en la carpeta de spam si no lo encuentras en la bandeja de entrada.',
-      //   });
-      //   navigation.navigate('RegisterData', {email});
+      //   navigation.navigate('Home');
       // } else {
       //   setModal({
       //     visible: true,
       //     status: 'error',
       //     title: 'Error!',
-      //     subtitle:
-      //       'Hubo un problema al verificar el codigo. Por favor, inténtalo de nuevo.',
+      //     subtitle: response.msg,
       //   });
       // }
-      navigation.navigate('RegisterData', {email});
+      navigation.navigate('Steps');
     } catch (error) {
-      console.error('CODE: Error al enviar el codigo:', error);
+      console.error('CODE: Error al registrar el usuario:', error);
     }
   };
 
@@ -119,8 +109,7 @@ const RegisterData = () => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-    >
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}>
       <View style={styles.containerWhite}>
         <LogoName />
 
@@ -154,7 +143,7 @@ const RegisterData = () => {
             value={password}
             editable={true}
           />
-          <Button title="Continuar" onPress={() => getEmailVerificate(email)} />
+          <Button title="Continuar" onPress={() => onHandleRegister()} />
         </View>
 
         <StatusModal
