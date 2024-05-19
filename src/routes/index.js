@@ -8,7 +8,7 @@ import ForgetPassword from '../screens/auth/ForgetPassword';
 import RegisterData from '../screens/auth/RegisterData';
 import NewPassword from '../screens/auth/NewPassword';
 import Steps from '../screens/home/Steps';
-
+import Notifications from '../screens/notifications/Notifications';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +55,12 @@ export default function Routes() {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{headerShown: false}}
+      />
+      {/*Notification*/}
+      <Stack.Screen
+        name="Notifications"
+        component={Notifications}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
