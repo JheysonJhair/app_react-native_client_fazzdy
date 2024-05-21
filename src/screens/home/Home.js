@@ -3,16 +3,15 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
   TouchableOpacity,
   ScrollView,
-  Platform,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Bell} from 'lucide-react-native';
 import Notification from '../../components/notifications/Notification';
 import {colors, fonts} from '../../theme/theme';
 import GestureRecognizer from 'react-native-swipe-gestures';
+import Footer from '../../components/utils/Footer';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -141,15 +140,13 @@ const Home = () => {
       onSwipeLeft={onSwipeLeft}
       onSwipeRight={onSwipeRight}
       style={{flex: 1}}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.h1}>Eventos</Text>
           <TouchableOpacity
             style={styles.contentNotify}
             onPress={() => navigation.navigate('Notifications')}>
-            <Bell size={22} color={colors.white} strokeWidth={2} />
+            <Bell size={17} color={colors.white} strokeWidth={2} />
           </TouchableOpacity>
         </View>
         <View style={styles.tabContainer}>
@@ -189,15 +186,21 @@ const Home = () => {
             <View key={index}>
               <Text style={styles.h2}>{month.monthYear}</Text>
               {month.events.map((event, eventIndex) => (
-                <Notification
-                  key={eventIndex}
-                  imageSource={event.imageSource}
-                  nameParty={event.nameParty}
-                  u={event.u}
-                  school={event.school}
-                  date={event.date}
-                  discotheque={event.discotheque}
-                />
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('Information', {event})
+                  }>
+                  <Notification
+                    key={eventIndex}
+                    imageSource={event.imageSource}
+                    nameParty={event.nameParty}
+                    u={event.u}
+                    school={event.school}
+                    date={event.date}
+                    discotheque={event.discotheque}
+                  />
+                </TouchableOpacity>
               ))}
             </View>
           ))}
@@ -207,7 +210,13 @@ const Home = () => {
             </Text>
           )}
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
+      <View style={styles.absoluteIconsContainer}>
+        <Footer iconName="home" selectedIcon={'home'} />
+        <Footer iconName="buy" selectedIcon={null} />
+        <Footer iconName="history" selectedIcon={null} />
+        <Footer iconName="config" selectedIcon={null} />
+      </View>
     </GestureRecognizer>
   );
 };
@@ -217,13 +226,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     paddingHorizontal: 20,
+    paddingBottom: 50,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingVertical: 30,
+    paddingTop: 20,
+    paddingBottom: 20,
     backgroundColor: colors.background,
   },
   h1: {
@@ -240,8 +251,8 @@ const styles = StyleSheet.create({
   },
   contentNotify: {
     backgroundColor: '#1E292A',
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
@@ -249,7 +260,7 @@ const styles = StyleSheet.create({
   tabContainer: {
     flexDirection: 'row',
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 5,
   },
   tabButton: {
     flex: 1,
@@ -285,6 +296,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
     color: colors.white,
+  },
+  // ::::::::::::::::::::::::::Footer
+  absoluteIconsContainer: {
+    position: 'absolute',
+    width: '100%',
+    backgroundColor: colors.background,
+    bottom: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 13,
   },
 });
 

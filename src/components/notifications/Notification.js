@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   line: {
     borderColor: colors.primary,
-    borderWidth: 1,
+    borderWidth: .4,
     marginVertical: 5,
   },
   image: {

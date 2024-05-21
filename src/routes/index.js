@@ -9,6 +9,8 @@ import RegisterData from '../screens/auth/RegisterData';
 import NewPassword from '../screens/auth/NewPassword';
 import Steps from '../screens/home/Steps';
 import Notifications from '../screens/notifications/Notifications';
+import EventInformation from '../screens/events/EventInformation';
+import EventUbication from '../screens/events/EventUbication';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +57,16 @@ export default function Routes() {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Information"
+        component={EventInformation}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Ubication"
+        component={EventUbication}
         options={{headerShown: false}}
       />
       {/*Notification*/}
