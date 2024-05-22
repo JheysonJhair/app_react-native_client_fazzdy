@@ -1,5 +1,6 @@
 import React from 'react';
-import {TextInput, StyleSheet} from 'react-native';
+import {View, TextInput, StyleSheet} from 'react-native';
+import {Pencil } from 'lucide-react-native';
 import {colors, fonts} from '../../theme/theme';
 
 const InputCommon = ({
@@ -10,33 +11,51 @@ const InputCommon = ({
   keyboardType,
 }) => {
   return (
-    <TextInput
-      style={[styles.input, isVerified && styles.disabledInput]}
-      placeholder={placeholder}
-      onChangeText={onChangeText}
-      value={value}
-      placeholderTextColor="#A3AABF"
-      editable={!isVerified}
-      keyboardType={keyboardType}
-    />
+    <View style={styles.container}>
+      <TextInput
+        style={[styles.input, isVerified && styles.disabledInput]}
+        placeholder={placeholder}
+        onChangeText={onChangeText}
+        value={value}
+        placeholderTextColor="#A3AABF"
+        editable={!isVerified}
+        keyboardType={keyboardType}
+      />
+      {!isVerified && (
+        <View style={styles.iconContainer}>
+          <Pencil  size={20} color={colors.primary} strokeWidth={4} />
+        </View>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+    width: '100%',
+  },
   input: {
-    backgroundColor: colors.other,
-    borderColor: colors.other,
-    borderWidth: 1,
+    backgroundColor: 'transparent',
+    borderColor: colors.white,
+    borderWidth: .6,
     padding: 10,
     paddingStart: 18,
     borderRadius: 8,
-    color: '#40A5E7',
-    fontSize: 16,
+    color: colors.white,
+    fontSize: 14,
     width: '100%',
-    marginBottom: 8,
+    marginBottom: 14,
+    paddingRight: 40,
+    fontFamily: fonts.mediumMt
   },
   disabledInput: {
     opacity: 0.6,
+  },
+  iconContainer: {
+    position: 'absolute',
+    right: 12,
+    top: 15,
   },
 });
 
