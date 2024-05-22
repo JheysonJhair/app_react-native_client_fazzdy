@@ -7,6 +7,9 @@ export const colors = {
   border: '#CBCAD0',
   white: '#FFFFFF',
   other: '#94939b',
+  card: '#1E292A',
+  success: '#1FD3AF',
+  error: '#DF506A',
 };
 export const fonts = {
   boldMt: 'Montserrat-ExtraBold',

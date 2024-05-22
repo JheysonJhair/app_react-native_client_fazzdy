@@ -15,7 +15,7 @@ const Footer = ({iconName, selectedIcon}) => {
         navigation.navigate('Home');
         break;
       case 'buy':
-        navigation.navigate('Buy');
+        navigation.navigate('Payment');
         break;
       case 'history':
         navigation.navigate('History');

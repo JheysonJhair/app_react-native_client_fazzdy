@@ -11,6 +11,9 @@ import Steps from '../screens/home/Steps';
 import Notifications from '../screens/notifications/Notifications';
 import EventInformation from '../screens/events/EventInformation';
 import EventUbication from '../screens/events/EventUbication';
+import Payment from '../screens/pay/Payment';
+import History from '../screens/pay/History';
+import config from '../screens/config/Config';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +76,23 @@ export default function Routes() {
       <Stack.Screen
         name="Notifications"
         component={Notifications}
+        options={{headerShown: false}}
+      />
+      {/*Payment*/}
+      <Stack.Screen
+        name="Payment"
+        component={Payment}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="History"
+        component={History}
+        options={{headerShown: false}}
+      />
+      {/*Config*/}
+      <Stack.Screen
+        name="Config"
+        component={config}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
