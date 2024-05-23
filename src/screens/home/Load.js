@@ -39,7 +39,7 @@ const Load = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       retrieveUserData();
-    }, 1000);
+    }, 700);
 
     return () => clearTimeout(timer);
   }, [navigation]);

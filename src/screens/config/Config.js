@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {colors, fonts} from '../../theme/theme';
 import Footer from '../../components/utils/Footer';
@@ -7,12 +13,12 @@ import {
   ChevronLeft,
   Bell,
   UserCog,
-  Phone,
   LogOut,
   ChevronRight,
 } from 'lucide-react-native';
 import InputCommon from '../../components/forms/InputCommon';
 import GoogleIcon from '../../assets/images/wp.png';
+import {SendWhatsApp} from '../../utils/helpers';
 
 const Config = () => {
   const navigation = useNavigation();
@@ -24,6 +30,11 @@ const Config = () => {
   });
   const [text, setText] = useState('');
   const [isVerified, setIsVerified] = useState(false);
+
+  const handleWhatsAppPress = () => {
+    SendWhatsApp('51983805438', 'Hola, necesito ayuda!');
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -42,7 +53,7 @@ const Config = () => {
         </View>
 
         <View style={styles.content}>
-          <TouchableOpacity style={styles.editProfileButton}>
+          <View style={styles.editProfileButton}>
             <View style={styles.contentHeader}>
               <UserCog size={30} color={colors.primary} strokeWidth={2} />
               <View style={styles.margin}>
@@ -52,7 +63,7 @@ const Config = () => {
                 </Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </View>
 
           <View style={styles.field}>
             <Text style={styles.label}>Correo</Text>
@@ -94,13 +105,15 @@ const Config = () => {
             isVerified={false}
             keyboardType="numeric"
           />
-          <TouchableOpacity style={styles.editProfileButton}>
+          <TouchableOpacity
+            style={styles.editProfileButton}
+            onPress={handleWhatsAppPress}>
             <View style={styles.contentWhatssap}>
               <View style={styles.contentHeader}>
                 <Image source={GoogleIcon} style={styles.imageStyle} />
                 <View style={styles.margin}>
                   <Text style={styles.editProfileText}>
-                    Chatea por whatssap
+                    Chatea por WhatsApp
                   </Text>
                   <Text style={styles.editProfileSubtext}>
                     Resuelve todas tus consultas
@@ -117,7 +130,9 @@ const Config = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.logoutButton}>
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={() => navigation.navigate('Login')}>
             <LogOut size={30} color={colors.primary} strokeWidth={2} />
             <Text style={styles.logoutText}>Cerrar sesión</Text>
           </TouchableOpacity>
@@ -236,7 +251,6 @@ const styles = StyleSheet.create({
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
-
     backgroundColor: colors.logoutBackground,
     borderRadius: 8,
   },

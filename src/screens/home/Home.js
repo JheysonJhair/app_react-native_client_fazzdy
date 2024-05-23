@@ -64,7 +64,6 @@ const Home = () => {
             ],
           },
         ];
-      } else {
         data = [
           {
             monthYear: 'Marzo 2024',
@@ -112,6 +111,49 @@ const Home = () => {
                 school: 'Ingeniería en Informática y Sistemas',
                 date: '15/04/24',
                 discotheque: 'POP',
+              },
+            ],
+          },
+        ];
+      } else {
+        data = [
+          {
+            monthYear: 'Enero 2024',
+            events: [
+              {
+                id: '5',
+                imageSource:
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbviz9v7ao1QXCZc1TLH4udz8ceePWJlIY01eNobJnTw&s',
+                nameParty: 'Party Five',
+                u: 'Unamba',
+                school: 'Ingeniería en Informática y Sistemas',
+                date: '10/01/24',
+                discotheque: 'BANG',
+              },
+            ],
+          },
+          {
+            monthYear: 'Febrero 2024',
+            events: [
+              {
+                id: '6',
+                imageSource:
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm0R-u8rhjywNLy52chPdOlDZIAxiEz3Mc08LhKkYAot50kF8RKEaEmQQM4qDM5urGbJk&usqp=CAU',
+                nameParty: 'Party Six',
+                u: 'Unamba',
+                school: 'Educación inicial intercultural bilingue',
+                date: '15/02/24',
+                discotheque: 'ZOOM',
+              },
+              {
+                id: '7',
+                imageSource:
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr1HsuIfx4ZhjlMB45a14F4Tmm3_pnx28-0UAt3178ULxAA3_Df8w1Y3j6SMibrXqyUMY&usqp=CAU',
+                nameParty: 'Party Seven',
+                u: 'Unamba',
+                school: 'Ingeniería civil',
+                date: '18/02/24',
+                discotheque: 'GROOVE',
               },
             ],
           },
@@ -206,7 +248,7 @@ const Home = () => {
           ))}
           {notifications.length === 0 && (
             <Text style={styles.noNotificationsText}>
-              No hay notificaciones disponibles.
+              No hay eventos disponibles.
             </Text>
           )}
         </ScrollView>

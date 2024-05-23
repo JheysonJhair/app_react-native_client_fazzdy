@@ -14,18 +14,18 @@ import NotificationCard from '../../components/cards/NotificationCard';
 const Notifications = () => {
   const navigation = useNavigation();
   const events = [
-    {
-      title: 'Party Error',
-      subtitle: 'Entrada comprada!',
-      date: '12/10/24',
-      isError: false,
-    },
-    {
-      title: 'Party Error',
-      subtitle: 'Error de compra!',
-      date: '12/10/24',
-      isError: true,
-    },
+    // {
+    //   title: 'Party Error',
+    //   subtitle: 'Entrada comprada!',
+    //   date: '12/10/24',
+    //   isError: false,
+    // },
+    // {
+    //   title: 'Party Error',
+    //   subtitle: 'Error de compra!',
+    //   date: '12/10/24',
+    //   isError: true,
+    // },
   ];
 
   return (

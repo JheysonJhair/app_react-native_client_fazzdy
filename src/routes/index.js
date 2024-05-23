@@ -14,6 +14,7 @@ import EventUbication from '../screens/events/EventUbication';
 import Payment from '../screens/pay/Payment';
 import History from '../screens/pay/History';
 import config from '../screens/config/Config';
+import Entrance from '../screens/pay/Entrance';
 
 const Stack = createNativeStackNavigator();
 
@@ -82,6 +83,11 @@ export default function Routes() {
       <Stack.Screen
         name="Payment"
         component={Payment}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Entrance"
+        component={Entrance}
         options={{headerShown: false}}
       />
       <Stack.Screen
