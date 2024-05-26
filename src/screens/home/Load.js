@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {View, StyleSheet, Image} from 'react-native';
 
 import * as Animatable from 'react-native-animatable';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {loginUser} from '../../services/apiLogin';
 import {colors, fonts} from '../../theme/theme';
@@ -28,7 +28,6 @@ const Load = () => {
         navigation.navigate('Login');
       }
     } catch (error) {
-      navigation.navigate('Login');
       console.error(
         'Local storage: Error al recuperar datos del usuario.  :',
         error,

@@ -1,8 +1,14 @@
 import React from 'react';
-import { TextInput, StyleSheet } from 'react-native';
-import { colors } from '../../theme/theme';
+import {TextInput, StyleSheet} from 'react-native';
+import {colors} from '../../theme/theme';
 
-const Input = ({ placeholder, onChangeText, value, editable = true, keyboardType = 'default' }) => {
+const Input = ({
+  placeholder,
+  onChangeText,
+  value,
+  editable = true,
+  keyboardType = 'default',
+}) => {
   return (
     <TextInput
       style={[styles.input, !editable && styles.disabledInput]}
@@ -22,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderColor: colors.border,
     borderWidth: 1,
-    padding: 13,
+    padding: 11,
     borderRadius: 6,
     color: '#000000',
     fontSize: 16,

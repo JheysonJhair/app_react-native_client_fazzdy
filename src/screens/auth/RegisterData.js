@@ -11,7 +11,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import Button from '../../components/forms/Button';
 import Input from '../../components/forms/Input';
 import InputPassword from '../../components/forms/InputPassword';
-import StatusModal from '../../components/modals/StatusModal ';
+import StatusModal from '../../components/modals/StatusModal';
 
 import {registerUser} from '../../services/apiUser';
 import {loginUser} from '../../services/apiLogin';
@@ -56,38 +56,40 @@ const RegisterData = () => {
       return;
     }
     try {
-      // const response = await registerUser({
-      //   Email: email,
-      //   Password: password,
-      //   FirstName: nombre,
-      //   LastName: apellidos,
-      //   PhoneNumber: telefono,
-      // });
+      const response = await registerUser({
+        Email: email,
+        Password: password,
+        FirstName: nombre,
+        LastName: apellidos,
+        PhoneNumber: telefono,
+      });
 
-      // if (response.success) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'success',
-      //     title: 'Registro exitoso!',
-      //     subtitle: 'Usted se registro conrrectamente!',
-      //   });
-      //   ///Login Automatico
-      //   const user = await loginUser(email, password);
-      //   setUserInfo({
-      //     IdUser: user.value.IdUser,
-      //     FirstName: user.value.FirstName,
-      //     LastName: user.value.LastName,
-      //     Phone: user.value.Phone,
-      //   });
-      //   navigation.navigate('Home');
-      // } else {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Error!',
-      //     subtitle: response.msg,
-      //   });
-      // }
+      if (response.success) {
+        setModal({
+          visible: true,
+          status: 'success',
+          title: 'Registro exitoso!',
+          subtitle: 'Usted se registro conrrectamente!',
+        });
+        //Login Automatico
+        const user = await loginUser(email, password);
+        setUserInfo({
+          IdUser: user.value.IdUser,
+          Email: user.value.Email,
+          Contrasena: user.value.Contrasena,
+          Nombre: user.value.Nombre,
+          Apellido: user.value.Apellido,
+          Telefono: user.value.Telefono,
+        });
+        navigation.navigate('Home');
+      } else {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Error!',
+          subtitle: response.msg,
+        });
+      }
       navigation.navigate('Steps');
     } catch (error) {
       console.error('CODE: Error al registrar el usuario:', error);
@@ -111,6 +113,7 @@ const RegisterData = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}>
       <View style={styles.containerWhite}>
+        <View style={styles.dragHandle} />
         <LogoName />
 
         <Text style={styles.h2}>Complete los campos</Text>
@@ -131,17 +134,17 @@ const RegisterData = () => {
             onChangeText={text => setLastName(text)}
             value={lastName}
           />
-          <Input
-            placeholder="Número de celular"
-            onChangeText={text => setPhone(text)}
-            value={phone}
-            keyboardType="numeric"
-          />
           <InputPassword
             placeholder="Contraseña"
             onChangeText={text => setPassword(text)}
             value={password}
             editable={true}
+          />
+          <Input
+            placeholder="Número de celular"
+            onChangeText={text => setPhone(text)}
+            value={phone}
+            keyboardType="numeric"
           />
           <Button title="Continuar" onPress={() => onHandleRegister()} />
         </View>
@@ -165,17 +168,24 @@ const styles = StyleSheet.create({
   },
   containerWhite: {
     flex: 1,
-    borderTopEndRadius: 20,
-    borderTopStartRadius: 20,
+    borderTopEndRadius: 10,
+    borderTopStartRadius: 10,
     backgroundColor: colors.white,
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 20,
   },
   formContainer: {
     marginTop: 20,
-    width: '80%',
+    width: '85%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dragHandle: {
+    width: 35,
+    height: 4,
+    borderRadius: 2.5,
+    backgroundColor: '#CCC',
+    marginBottom: 50,
   },
   h2: {
     fontFamily: fonts.semiBoldMt,
@@ -207,7 +217,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   dividerLine: {
-    width: '36%',
+    width: '39%',
     height: 1,
     backgroundColor: colors.border,
   },

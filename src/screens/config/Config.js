@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {colors, fonts} from '../../theme/theme';
 import Footer from '../../components/utils/Footer';
@@ -19,15 +13,30 @@ import {
 import InputCommon from '../../components/forms/InputCommon';
 import GoogleIcon from '../../assets/images/wp.png';
 import {SendWhatsApp} from '../../utils/helpers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useUser} from '../../hooks/UserContext';
 
 const Config = () => {
   const navigation = useNavigation();
+  const {userData} = useUser();
+
   const [profile, setProfile] = useState({
     email: 'jheysonjhairpro@gmail.com',
     firstName: 'Jheyson Jhair',
     lastName: 'Arone Angeles',
     phone: '983 805 438',
   });
+
+  const clearUserData = async () => {
+    try {
+      await AsyncStorage.removeItem('userData');
+      console.error('userData eliminado con exito');
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('CODE: Error al borrar datos de usuario:', error);
+    }
+  };
+
   const [text, setText] = useState('');
   const [isVerified, setIsVerified] = useState(false);
 
@@ -57,7 +66,9 @@ const Config = () => {
             <View style={styles.contentHeader}>
               <UserCog size={30} color={colors.primary} strokeWidth={2} />
               <View style={styles.margin}>
-                <Text style={styles.editProfileText}>Editar mi perfil</Text>
+                <Text style={styles.editProfileText}>
+                  Editar mi perfil {userData.Nombre}
+                </Text>
                 <Text style={styles.editProfileSubtext}>
                   Cambia de nombre a cualquier momento
                 </Text>
@@ -130,9 +141,7 @@ const Config = () => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.logoutButton}
-            onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity style={styles.logoutButton} onPress={clearUserData}>
             <LogOut size={30} color={colors.primary} strokeWidth={2} />
             <Text style={styles.logoutText}>Cerrar sesión</Text>
           </TouchableOpacity>

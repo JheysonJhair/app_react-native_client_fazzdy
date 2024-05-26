@@ -2,14 +2,14 @@ import React, {useState, useEffect} from 'react';
 import CheckBox from '@react-native-community/checkbox';
 import {StyleSheet, Text, View, KeyboardAvoidingView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Button from '../../components/forms/Button';
 import Input from '../../components/forms/Input';
 import InputPassword from '../../components/forms/InputPassword';
 import GoogleButton from '../../components/forms/GoogleButton';
 import FacebookButton from '../../components/forms/FacebookButton';
-import StatusModal from '../../components/modals/StatusModal ';
+import StatusModal from '../../components/modals/StatusModal';
 
 import {loginUser} from '../../services/apiLogin';
 import {useUser} from '../../hooks/UserContext';
@@ -34,58 +34,55 @@ const Login = () => {
   //Login
   const onHandleLogin = async (email, password) => {
     try {
-      // if (!email || !password) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Campos vacios',
-      //     subtitle: 'Complete todos los campos, es necesario!',
-      //   });
-      //   return;
-      // }
+      if (!email || !password) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Campos vacios',
+          subtitle: 'Complete todos los campos, es necesario!',
+        });
+        return;
+      }
 
-      // const emailRegex = /\S+@\S+\.\S+/;
-      // if (!emailRegex.test(email)) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Correo invalido',
-      //     subtitle: 'Por favor, utiliza una cuenta de Gmail.',
-      //   });
-      //   return;
-      // }
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!emailRegex.test(email)) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Correo invalido',
+          subtitle: 'Por favor, utiliza una cuenta de Gmail.',
+        });
+        return;
+      }
 
-      // const user = await loginUser(email, password);
-      // setModal({
-      //   visible: true,
-      //   status: 'loading',
-      //   title: 'Campos vacios',
-      //   subtitle: 'Complete todos los campos, es necesario!',
-      // });
-      // if (user.msg == 'Ingreso correctamente') {
-      //   if (isChecked) {
-      //     saveUserData();
-      //   }
-      //   setUserInfo({
-      //     IdUser: user.value.IdUser,
-      //     FirstName: user.value.FirstName,
-      //     LastName: user.value.LastName,
-      //     BirthDate: user.value.BirthDate,
-      //     Phone: user.value.Phone,
-      //     ProfileImage: user.value.ProfileImage,
-      //     UserName: user.value.UserName,
-      //     Description: user.value.Description,
-      //   });
-      // } else {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Error de ingreso',
-      //     subtitle: 'Crea una cuenta, es muy rápido!',
-      //   });
-      // }
-      console.log('hola');
-      navigation.navigate('Steps')
+      const user = await loginUser(email, password);
+      setModal({
+        visible: true,
+        status: 'loading',
+        title: 'Campos vacios',
+        subtitle: 'Complete todos los campos, es necesario!',
+      });
+      if (user.msg == 'Ingreso correctamente') {
+        if (isChecked) {
+          saveUserData();
+        }
+        setUserInfo({
+          IdUser: user.value.IdUser,
+          Email: user.value.Email,
+          Contrasena: user.value.Contrasena,
+          Nombre: user.value.Nombre,
+          Apellido: user.value.Apellido,
+          Telefono: user.value.Telefono,
+        });
+        navigation.navigate('Steps');
+      } else {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Error de ingreso',
+          subtitle: 'Crea una cuenta, es muy rápido!',
+        });
+      }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
       setModal({
@@ -101,15 +98,9 @@ const Login = () => {
   const saveUserData = async () => {
     try {
       await AsyncStorage.setItem('userData', JSON.stringify({email, password}));
+      console.error('Guardado correctamente el user data');
     } catch (error) {
       console.error('Error al guardar datos de usuario:', error);
-    }
-  };
-  const clearUserData = async () => {
-    try {
-      await AsyncStorage.removeItem('userData');
-    } catch (error) {
-      console.error('Error al borrar datos de usuario:', error);
     }
   };
 
@@ -129,6 +120,7 @@ const Login = () => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.containerWhite}>
+        <View style={styles.dragHandle} />
         <LogoName />
         <Text style={styles.h2}>Inicia Sesión para continuar</Text>
 
@@ -211,14 +203,21 @@ const styles = StyleSheet.create({
   },
   containerWhite: {
     flex: 1,
-    borderTopEndRadius: 20,
-    borderTopStartRadius: 20,
+    borderTopEndRadius: 15,
+    borderTopStartRadius: 15,
     backgroundColor: colors.white,
     alignItems: 'center',
-    paddingTop: 70,
+    paddingTop: 25,
+  },
+  dragHandle: {
+    width: 35,
+    height: 4,
+    borderRadius: 2.5,
+    backgroundColor: '#CCC',
+    marginBottom: 50,
   },
   formContainer: {
-    width: '80%',
+    width: '85%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -276,7 +275,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   dividerLine: {
-    width: '36%',
+    width: '39%',
     height: 1,
     backgroundColor: colors.border,
   },

@@ -13,7 +13,7 @@ import Input from '../../components/forms/Input';
 import VerificationCodeInput from '../../components/forms/VerificationCodeInput';
 import GoogleButton from '../../components/forms/GoogleButton';
 import FacebookButton from '../../components/forms/FacebookButton';
-import StatusModal from '../../components/modals/StatusModal ';
+import StatusModal from '../../components/modals/StatusModal';
 
 import {verifyEmail, verifyCode} from '../../services/apiUser';
 import LogoName from '../../components/forms/LogoName';
@@ -34,28 +34,28 @@ const RegisterEmail = () => {
 
   const getEmailVerificate = async email => {
     try {
-      // const emailRegex = /\S+@\S+\.\S+/;
-      // if (!emailRegex.test(email)) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Correo invalido',
-      //     subtitle: 'Por favor, utiliza una cuenta de Gmail.',
-      //   });
-      //   return;
-      // }
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!emailRegex.test(email)) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Correo invalido',
+          subtitle: 'Por favor, utiliza una cuenta de Gmail.',
+        });
+        return;
+      }
 
-      // const user = await verifyEmail(email);
+      const user = await verifyEmail(email);
 
-      // if (user.success) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'success',
-      //     title: 'Enviado correctamente!',
-      //     subtitle: 'Por favor verifique eh ingrese el código enviado.',
-      //   });
-      //   setEmailVerified(true);
-      // }
+      if (user.success) {
+        setModal({
+          visible: true,
+          status: 'success',
+          title: 'Enviado correctamente!',
+          subtitle: 'Por favor verifique eh ingrese el código enviado.',
+        });
+        setEmailVerified(true);
+      }
       setEmailVerified(true);
     } catch (error) {
       console.error('CODE: Error al verificar email de RegisterData:', error);
@@ -63,38 +63,37 @@ const RegisterEmail = () => {
   };
   const getCodeVerificate = async (email, code) => {
     try {
-      // const codeFormated = code.join('');
-      // const codeRegex = /^\d{4}$/;
-      // if (!codeRegex.test(codeFormated)) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Código no valido!',
-      //     subtitle: 'Por favor ingrese un código valido.',
-      //   });
-      //   return;
-      // }
-      // const user = await verifyCode(email, codeFormated);
+      const codeFormated = code.join('');
+      const codeRegex = /^\d{4}$/;
+      if (!codeRegex.test(codeFormated)) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Código no valido!',
+          subtitle: 'Por favor ingrese un código valido.',
+        });
+        return;
+      }
+      const user = await verifyCode(email, codeFormated);
 
-      // if (user.success) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'loading',
-      //     title: 'Verificando...',
-      //     subtitle:
-      //       'Te hemos enviado un código a tu correo. Por favor, verifica en la carpeta de spam si no lo encuentras en la bandeja de entrada.',
-      //   });
-      //   navigation.navigate('RegisterData', {email});
-      // } else {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Error!',
-      //     subtitle:
-      //       'Hubo un problema al verificar el codigo. Por favor, inténtalo de nuevo.',
-      //   });
-      // }
-      navigation.navigate('RegisterData', {email});
+      if (user.success) {
+        setModal({
+          visible: true,
+          status: 'loading',
+          title: 'Verificando...',
+          subtitle:
+            'Te hemos enviado un código a tu correo. Por favor, verifica en la carpeta de spam si no lo encuentras en la bandeja de entrada.',
+        });
+        navigation.navigate('RegisterData', {email});
+      } else {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Error!',
+          subtitle:
+            'Hubo un problema al verificar el codigo. Por favor, inténtalo de nuevo.',
+        });
+      }
     } catch (error) {
       console.error('CODE: Error al enviar el codigo de RegisterData:', error);
     }
@@ -116,6 +115,7 @@ const RegisterEmail = () => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.containerWhite}>
+        <View style={styles.dragHandle} />
         <LogoName />
 
         {!emailVerified ? (
@@ -196,17 +196,24 @@ const styles = StyleSheet.create({
   },
   containerWhite: {
     flex: 1,
-    borderTopEndRadius: 20,
-    borderTopStartRadius: 20,
+    borderTopEndRadius: 15,
+    borderTopStartRadius: 15,
     backgroundColor: colors.white,
     alignItems: 'center',
-    paddingTop: 70,
+    paddingTop: 25,
   },
   formContainer: {
     marginTop: 20,
-    width: '80%',
+    width: '85%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  dragHandle: {
+    width: 35,
+    height: 4,
+    borderRadius: 2.5,
+    backgroundColor: '#CCC',
+    marginBottom: 50,
   },
   h2: {
     fontFamily: fonts.semiBoldMt,
@@ -238,7 +245,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   dividerLine: {
-    width: '36%',
+    width: '38%',
     height: 1,
     backgroundColor: colors.border,
   },

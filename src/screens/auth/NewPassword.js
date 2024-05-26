@@ -11,7 +11,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 
 import Button from '../../components/forms/Button';
 import InputForgetPassword from '../../components/forms//InputForgetPassword';
-import StatusModal from '../../components/modals/StatusModal ';
+import StatusModal from '../../components/modals/StatusModal';
 
 import {updatePassword} from '../../services/apiUser';
 import {colors, fonts} from '../../theme/theme';
@@ -51,28 +51,28 @@ const NewPassword = () => {
     }
 
     try {
-      //   const response = await updatePassword({
-      //     Email: email,
-      //     Password: password,
-      //   });
-      //   if (response.success) {
-      //     setModal({
-      //       visible: true,
-      //       status: 'success',
-      //       title: 'Advertencia',
-      //       subtitle: 'Su contraseña se actualizo satisfactoriamente!.',
-      //     });
-      //     setTimeout(() => {
-      //       navigation.navigate('Login');
-      //     }, 3000);
-      //   } else {
-      //     setModal({
-      //       visible: true,
-      //       status: 'error',
-      //       title: 'Error',
-      //       subtitle: response.msg,
-      //     });
-      //   }
+      const response = await updatePassword({
+        Email: email,
+        Password: password,
+      });
+      if (response.success) {
+        setModal({
+          visible: true,
+          status: 'success',
+          title: 'Advertencia',
+          subtitle: 'Su contraseña se actualizo satisfactoriamente!.',
+        });
+        setTimeout(() => {
+          navigation.navigate('Login');
+        }, 3000);
+      } else {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Error',
+          subtitle: response.msg,
+        });
+      }
       navigation.navigate('Login');
     } catch (error) {
       console.error('CODE: Error al registrar el usuario:', error);

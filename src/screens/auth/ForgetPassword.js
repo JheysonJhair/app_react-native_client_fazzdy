@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import CheckBox from '@react-native-community/checkbox';
 import {
   StyleSheet,
   Text,
@@ -8,11 +7,10 @@ import {
   Image,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {AsyncStorage} from 'react-native';
 
 import Button from '../../components/forms/Button';
 import InputForget from '../../components/forms/InputForget';
-import StatusModal from '../../components/modals/StatusModal ';
+import StatusModal from '../../components/modals/StatusModal';
 import VerificationCodeInput from '../../components/forms/VerificationCodeInput';
 
 import {colors, fonts} from '../../theme/theme';
@@ -32,28 +30,28 @@ const ForgetPassword = () => {
 
   const getEmailVerificate = async email => {
     try {
-      // const emailRegex = /\S+@\S+\.\S+/;
-      // if (!emailRegex.test(email)) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Correo invalido',
-      //     subtitle: 'Por favor, utiliza una cuenta de Gmail.',
-      //   });
-      //   return;
-      // }
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!emailRegex.test(email)) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Correo invalido',
+          subtitle: 'Por favor, utiliza una cuenta de Gmail.',
+        });
+        return;
+      }
 
-      // const user = await verifyEmail(email);
+      const user = await verifyEmail(email);
 
-      // if (user.success) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'success',
-      //     title: 'Enviado correctamente!',
-      //     subtitle: 'Por favor verifique eh ingrese el código enviado.',
-      //   });
-      //   setEmailVerified(true);
-      // }
+      if (user.success) {
+        setModal({
+          visible: true,
+          status: 'success',
+          title: 'Enviado correctamente!',
+          subtitle: 'Por favor verifique eh ingrese el código enviado.',
+        });
+        setEmailVerified(true);
+      }
       setEmailVerified(true);
     } catch (error) {
       console.error('CODE: Error al verificar email de ForgetPassword:', error);
@@ -61,37 +59,37 @@ const ForgetPassword = () => {
   };
   const getCodeVerificate = async (email, code) => {
     try {
-      // const codeFormated = code.join('');
-      // const codeRegex = /^\d{4}$/;
-      // if (!codeRegex.test(codeFormated)) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Código no valido!',
-      //     subtitle: 'Por favor ingrese un código valido.',
-      //   });
-      //   return;
-      // }
-      // const user = await verifyCode(email, codeFormated);
+      const codeFormated = code.join('');
+      const codeRegex = /^\d{4}$/;
+      if (!codeRegex.test(codeFormated)) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Código no valido!',
+          subtitle: 'Por favor ingrese un código valido.',
+        });
+        return;
+      }
+      const user = await verifyCode(email, codeFormated);
 
-      // if (user.success) {
-      //   setModal({
-      //     visible: true,
-      //     status: 'loading',
-      //     title: 'Verificando...',
-      //     subtitle:
-      //       'Te hemos enviado un código a tu correo. Por favor, verifica en la carpeta de spam si no lo encuentras en la bandeja de entrada.',
-      //   });
-      //   navigation.navigate('RegisterData', {email});
-      // } else {
-      //   setModal({
-      //     visible: true,
-      //     status: 'error',
-      //     title: 'Error!',
-      //     subtitle:
-      //       'Hubo un problema al verificar el codigo. Por favor, inténtalo de nuevo.',
-      //   });
-      // }
+      if (user.success) {
+        setModal({
+          visible: true,
+          status: 'loading',
+          title: 'Verificando...',
+          subtitle:
+            'Te hemos enviado un código a tu correo. Por favor, verifica en la carpeta de spam si no lo encuentras en la bandeja de entrada.',
+        });
+        navigation.navigate('RegisterData', {email});
+      } else {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Error!',
+          subtitle:
+            'Hubo un problema al verificar el codigo. Por favor, inténtalo de nuevo.',
+        });
+      }
       navigation.navigate('NewPassword', {email});
     } catch (error) {
       console.error(
