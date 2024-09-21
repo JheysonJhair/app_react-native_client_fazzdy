@@ -4,7 +4,7 @@
     </a>
     <h1>JhairDev - Fazzdy</h1>
     <p align="center">
-        Desarrollador Jhair
+         Full Stack Developer Jhair
     </p>
 </div>
 
