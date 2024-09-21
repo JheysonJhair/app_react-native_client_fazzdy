@@ -3,6 +3,10 @@ import CheckBox from '@react-native-community/checkbox';
 import {StyleSheet, Text, View, KeyboardAvoidingView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 import Button from '../../components/forms/Button';
 import Input from '../../components/forms/Input';
@@ -30,6 +34,12 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com', // Reemplaza esto con tu Web Client ID
+    });
+  }, []);
 
   //Login
   const onHandleLogin = async (email, password) => {
@@ -104,7 +114,6 @@ const Login = () => {
     }
   };
 
-  //Modal
   useEffect(() => {
     if (modal.visible) {
       const timeout = setTimeout(
@@ -114,6 +123,49 @@ const Login = () => {
       return () => clearTimeout(timeout);
     }
   }, [modal]);
+
+  const signInWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      // Aquí puedes manejar la respuesta del inicio de sesión de Google
+      console.log(userInfo);
+      setUserInfo({
+        IdUser: userInfo.user.id,
+        Email: userInfo.user.email,
+        Nombre: userInfo.user.givenName,
+        Apellido: userInfo.user.familyName,
+        // Otros campos si es necesario
+      });
+      navigation.navigate('Steps');
+    } catch (error) {
+      console.error(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Inicio de sesión cancelado',
+          subtitle: 'Inténtalo de nuevo.',
+        });
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // la operación está en curso
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Google Play Services no está disponible',
+          subtitle: 'Intenta más tarde.',
+        });
+      } else {
+        setModal({
+          visible: true,
+          status: 'error',
+          title: 'Error de inicio de sesión',
+          subtitle: 'Inténtalo de nuevo.',
+        });
+      }
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -180,9 +232,7 @@ const Login = () => {
           <FacebookButton
             onPress={() => console.log('Botón de Facebook presionado')}
           />
-          <GoogleButton
-            onPress={() => console.log('Botón de Google presionado')}
-          />
+          <GoogleButton onPress={signInWithGoogle} />
         </View>
         <StatusModal
           visible={modal.visible}
@@ -238,7 +288,6 @@ const styles = StyleSheet.create({
   span: {
     color: colors.primary,
   },
-  //checkbox
   checkboxContainer: {
     marginTop: 15,
     flexDirection: 'row',
@@ -267,7 +316,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: fonts.semiBoldMt,
   },
-  //Linea
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -284,11 +332,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontFamily: fonts.semiBoldMt,
   },
-  //Google y Facebook
   socialButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 20,
   },
 });
+
 export default Login;

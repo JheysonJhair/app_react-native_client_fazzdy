@@ -1,15 +1,14 @@
 import React from 'react';
-import {TouchableOpacity, StyleSheet, Image} from 'react-native';
+import { TouchableOpacity, StyleSheet, Image } from 'react-native';
 import GoogleIcon from '../../assets/images/google.png';
-import {colors} from '../../theme/theme';
+import { colors } from '../../theme/theme';
 
-const GoogleButton = ({onPress}) => {
+const GoogleButton = ({ onPress }) => {
   return (
     <TouchableOpacity
       style={styles.socialButton}
-      onPress={() => {
-        onPress && onPress();
-      }}>
+      onPress={onPress}
+    >
       <Image source={GoogleIcon} style={styles.socialButtonIcon} />
     </TouchableOpacity>
   );
